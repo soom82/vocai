@@ -1,0 +1,76 @@
+{
+  "words": [
+    {
+      "example": "apple and grape.",
+      "vocabulary" : [
+        {
+          "english": "apple",
+          "mean": "사과"
+        },
+        {
+          "english": "grape",
+          "mean": "포도"
+        }
+      ]
+    },
+
+    {
+      "example": "melon and watermelon",
+      "vocabulary" : [
+        {
+          "english": "melon",
+          "mean": "멜론"
+        },
+        {
+          "english": "watermelon",
+          "mean": "수박"
+        }
+      ]
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "vocabulary" : [
+        {
+          "english": "extract",
+          "mean": "추출하다, 뽑다"
+        }
+      ]
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "vocabulary" : [
+        {
+          "english": "extract",
+          "mean": "추출하다, 뽑다"
+        }
+      ]
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "vocabulary" : [
+        {
+          "english": "extract",
+          "mean": "추출하다, 뽑다"
+        }
+      ]
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "vocabulary" : [
+        {
+          "english": "extract",
+          "mean": "추출하다, 뽑다"
+        }
+      ]
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "vocabulary" : [
+        {
+          "english": "extract",
+          "mean": "추출하다, 뽑다"
+        }
+      ]
+    }
+  ]
+}
