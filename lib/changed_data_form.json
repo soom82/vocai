@@ -1,0 +1,44 @@
+{
+  "words": [
+    {
+      "example": "apple and grape.",
+      "english": "apple",
+      "mean": "사과"
+
+    },
+    {
+      "example": "apple and grape.",
+      "english": "grape",
+      "mean": "포도"
+
+    },
+    {
+      "example": "melon and watermelon.",
+      "english": "melon",
+      "mean": "멜론"
+
+    },
+    {
+      "example": "melon and watermelon.",
+      "english": "watermelon",
+      "mean": "수박"
+
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "english": "extract",
+      "mean": "추출하다, 뽑다"
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "english": "extract",
+      "mean": "추출하다, 뽑다"
+    },
+    {
+      "example": "Extracting oil from the ground is a complicated and expensive process.",
+      "english": "extract",
+      "mean": "추출하다, 뽑다"
+    }
+
+  ]
+}

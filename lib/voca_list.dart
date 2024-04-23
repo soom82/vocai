@@ -13,41 +13,34 @@ void main() {
 }
 class Word {
   final String example;
-  final List<Vocabulary> vocabulary;
+  final String english;
+  final String mean;
 
-  Word({required this.example, required this.vocabulary});
+
+  Word({required this.example, required this.english,required this.mean});
 
   Map<String, dynamic> toJson() {
     return {
       'example': example,
-      'vocabulary': vocabulary,
+      'english': english,
+      'mean': mean
+
     };
   }
 
   factory Word.fromJson(Map<String, dynamic> json) {
-    List<dynamic> vocabulariesJson = json['vocabulary'];
-    List<Vocabulary> vocabularies = vocabulariesJson.map((data) => Vocabulary.fromJson(data)).toList();
 
     return Word(
       example: json['example'],
-      vocabulary: vocabularies,
-    );
-  }
-}
-
-class Vocabulary {
-  final String english;
-  final String mean;
-
-  Vocabulary({required this.english, required this.mean});
-
-  factory Vocabulary.fromJson(Map<String, dynamic> json) {
-    return Vocabulary(
       english: json['english'],
-      mean: json['mean'],
+      mean: json['mean']
+
+
     );
   }
 }
+
+
 
 class JsonScreen extends StatefulWidget {
   @override
@@ -64,69 +57,17 @@ class _JsonScreenState extends State<JsonScreen> {
   }
 
   Future<void> _loadJsonData() async {
-    String jsonString = await rootBundle.loadString('lib/data.json');
+    String jsonString = await rootBundle.loadString('lib/changed_data_form.json');
     List<dynamic> jsonData = json.decode(jsonString)['words'];
+    print(1);
+    print(jsonData);
     setState(() {
       words = jsonData.map((data) => Word.fromJson(data)).toList();
+      print(words);
     });
   }
 
-  Widget buildVocabularyWidgets(List<Vocabulary> vocabularies, String ex) {
-    List<Widget> list = [];
-    for (var vocab in vocabularies) {
-      var container = Container(
-        width: double.infinity,
-        height: 80.0,
-        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blueGrey, width: 0.3),
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 100,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                border: Border(right: BorderSide(width: 0.1)),
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueGrey, width: 0.1),
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10)),
-                      ),
-                      child: Center(child: Text(vocab.english)),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueGrey, width: 0.1),
-                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
-                      ),
-                      child: Center(child: Text(vocab.mean)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.fromLTRB(10,10,10,10),
-                width: MediaQuery.of(context).size.width * 0.5,
-                child: Text(ex)),
-          ],
-        ),
-      );
-      list.add(container);
-    }
-    return Column(children: list);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -175,19 +116,95 @@ class _JsonScreenState extends State<JsonScreen> {
                                   color :Colors.white),
                               child: SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
-                                  child: Column(
-                                    children: [
-                                      ListView.builder(shrinkWrap: true,
+                                  child:
+                                        ListView.builder(shrinkWrap: true,
                                         itemCount: words.length,
-                                        itemBuilder: (context, index){
-                                        return buildVocabularyWidgets(words[index].vocabulary, words[index].example);
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            width: double.infinity,
+                                            height: 80.0,
+                                            margin: EdgeInsets.fromLTRB(
+                                                10, 10, 10, 0),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.blueGrey,
+                                                  width: 0.3),
+                                              borderRadius: BorderRadius
+                                                  .circular(10),
+                                              color: Colors.white,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 100,
+                                                  height: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        right: BorderSide(
+                                                            width: 0.1)),
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .blueGrey,
+                                                                width: 0.1),
+                                                            borderRadius: BorderRadius
+                                                                .only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                    10)),
+                                                          ),
+                                                          child: Center(
+                                                              child: Text(
+                                                                  words[index]
+                                                                      .english)),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .blueGrey,
+                                                                width: 0.1),
+                                                            borderRadius: BorderRadius
+                                                                .only(
+                                                                bottomLeft: Radius
+                                                                    .circular(
+                                                                    10)),
+                                                          ),
+                                                          child: Center(
+                                                              child: Text(
+                                                                  words[index]
+                                                                      .mean)),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                    margin: EdgeInsets.fromLTRB(
+                                                        10, 10, 10, 10),
+                                                    width: MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .width * 0.5,
+                                                    child: Text(
+                                                        words[index].example)),
+                                              ],
+                                            ),
 
 
-                                       }
-                                      )
+                                          );
+                                        }
+                                        )
 
-                                    ],
-                                  )
                             ),
                           ),
                                       )],
