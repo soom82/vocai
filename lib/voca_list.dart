@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
+import 'dart:io';
 
 // 앱 구동
 void main() {
@@ -49,7 +51,9 @@ class JsonScreen extends StatefulWidget {
 
 class _JsonScreenState extends State<JsonScreen> {
   List<Word> words = [];
-
+  String selectedFileName = 'changed_data_form.json';
+  // 받은 단어장 이름 (메인 페이지에서 저장한 단어장파일이름으로 대체해야됨)
+  // 그 전 페이지에서 사용한 변수를 사용할 수 있으면 없애도 되는 줄
   @override
   void initState() {
     super.initState();
@@ -57,14 +61,24 @@ class _JsonScreenState extends State<JsonScreen> {
   }
 
   Future<void> _loadJsonData() async {
-    String jsonString = await rootBundle.loadString('lib/changed_data_form.json');
+    final directory = await getApplicationDocumentsDirectory(); // 앱 문서 디렉토리 경로 가져오기
+    //print("문서 디렉토리 경로: ${directory.path}");
+    final file = File('${directory.path}/$selectedFileName.json'); // 파일 객체 생성
+    final String jsonString = await file.readAsString();
     List<dynamic> jsonData = json.decode(jsonString)['words'];
-    print(1);
-    print(jsonData);
     setState(() {
       words = jsonData.map((data) => Word.fromJson(data)).toList();
-      print(words);
     });
+
+    // //String jsonString = await rootBundle.loadString('lib/$nowFileName.json');
+    // String jsonString = await rootBundle.loadString('lib/changed_data_form.json');
+    // List<dynamic> jsonData = json.decode(jsonString)['words'];
+    // print(1);
+    // print(jsonData);
+    // setState(() {
+    //   words = jsonData.map((data) => Word.fromJson(data)).toList();
+    //   print(words);
+    // });
   }
 
 
