@@ -25,6 +25,8 @@ class InputDemo extends StatefulWidget {
 class _InputDemoState extends State<InputDemo> {
   final voca_nameController = TextEditingController();
   List<String> vocalistname = [];
+  //버튼 눌렀을 때 해당 단어장 이름을 담는 변수
+  var selectedFileName = '';
 
   @override
   void dispose() {
@@ -39,7 +41,9 @@ class _InputDemoState extends State<InputDemo> {
     Widget newButton = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            selectedFileName = '$input_text.json';
+          },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(150, 100),
             backgroundColor: Colors.white,
@@ -72,7 +76,7 @@ class _InputDemoState extends State<InputDemo> {
     vocalistname.add('$fileName.json');
     print(vocalistname);
     Map<String, dynamic> jsonData = {
-      "{$fileName}": [
+      "{Words}": [
 
       ]
     };
