@@ -6,8 +6,9 @@ import 'dart:convert';
 import 'dart:io';
 
 
-void main() => runApp(MyApp());
-
+void main() {
+  runApp(MyApp());
+}
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -22,9 +23,10 @@ class InputDemo extends StatefulWidget {
   _InputDemoState createState() => _InputDemoState();
 }
 
+
 class _InputDemoState extends State<InputDemo> {
   final voca_nameController = TextEditingController();
-  List<String> vocalistname = [];
+  List<String> VocaName = [];
   //버튼 눌렀을 때 해당 단어장 이름을 담는 변수
   var selectedFileName = '';
 
@@ -66,15 +68,44 @@ class _InputDemoState extends State<InputDemo> {
     setState(() {
       buttonsList.add(space);
       buttonsList.add(newButton);
+      updateJsonFile('$input_text.json');
     });
 
   }
+// 단어장 이름들 담을 json 파일, 단어장 추가할 때마다 함수 불러서 json파일에 적게 함
+  Future<void> updateJsonFile(String vocalistname) async {
+    try {
+      // 1. JSON 파일 읽기
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/VOCA_LIST.json');
+      String jsonContent = await file.readAsString();
+      // VOCA_LIST 파일 초기화
+      Map<String, dynamic> data = {
+        "vocalist" : []
+      };
+
+      // Map<String, dynamic> data = jsonDecode(jsonContent);
+      // 3. 리스트 데이터 추가
+      data['vocalist'].add(vocalistname);
+
+      // 4. JSON 인코딩
+      String updatedJsonContent = jsonEncode(data);
+
+      // 5. JSON 파일 저장
+      await file.writeAsString(updatedJsonContent);
+      String jsonString2 = file.readAsStringSync();
+      print("파일 이름들 담은 json 파일 \n"+jsonString2);
+    } catch (e) {
+      print('cannot update vocalistname: $e');
+    }
+  }
+
   Future<void> saveJsonFile(String fileName) async {
     final directory = await getApplicationDocumentsDirectory(); // 앱 문서 디렉토리 경로 가져오기
     //print("문서 디렉토리 경로: ${directory.path}");
     final file = File('${directory.path}/$fileName.json'); // 파일 객체 생성
-    vocalistname.add('$fileName.json');
-    print(vocalistname);
+    // VocaName.add('$fileName.json');
+    // print(VocaName);
     Map<String, dynamic> jsonData = {
       "{Words}": [
 
