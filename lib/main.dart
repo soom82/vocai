@@ -31,6 +31,12 @@ class _InputDemoState extends State<InputDemo> {
   var selectedFileName = '';
 
   @override
+  void didChangeDependencies() { // repeatListNum 함수를 위젯 build 전에 한번 돌리기 위해 작성한 함수
+    super.didChangeDependencies();
+    repeatListNum();
+  }
+
+  @override
   void dispose() {
     voca_nameController.dispose();
 
@@ -39,12 +45,22 @@ class _InputDemoState extends State<InputDemo> {
 
   List<Widget> buttonsList = [];
 
-  void addButton(String input_text) {
+  Future<void> repeatListNum() async{
+    List<dynamic> li = await readJsonFile(); // VOCA_LIST json파일 읽어오기
+    print(li);
+    for (int i = 0; i < li.length; i++) {
+      savedButton(li[i]);
+    }
+  }
+  // 저장되어있는 단어장 리스트 버튼 생성되게 할 함수
+  // 들어가는 위젯이 savedButton 함수랑 addButton 함수랑 같음
+  // 시간날 때 코드 길이 줄이기
+  void savedButton(String input_text) {
     Widget newButton = Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: ElevatedButton(
           onPressed: () {
-            selectedFileName = '$input_text.json';
+            selectedFileName = '$input_text';
           },
           style: ElevatedButton.styleFrom(
             minimumSize: Size(150, 100),
@@ -68,7 +84,41 @@ class _InputDemoState extends State<InputDemo> {
     setState(() {
       buttonsList.add(space);
       buttonsList.add(newButton);
-      updateJsonFile('$input_text.json');
+    });
+
+  }
+
+  void addButton(String input_text) {
+    Widget newButton = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: ElevatedButton(
+          onPressed: () {
+            selectedFileName = '$input_text';
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(150, 100),
+            backgroundColor: Colors.white,
+            // 글자 색상 및 애니메이션 색 설정
+            foregroundColor: Colors.black,
+            // 글자 그림자 설정
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            // 글자 3D 입체감 높이
+            textStyle: TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 30.0,
+            ),
+            //padding: EdgeInsets.fromLTRB(50, 50, 50, 50),
+          ),
+          child: Text(input_text),
+        ));
+    Widget space = SizedBox(height: 10); // 원하는 높이로 조절
+    setState(() {
+
+      buttonsList.add(space);
+      buttonsList.add(newButton);
+      updateJsonFile('$input_text');
     });
 
   }
@@ -80,11 +130,11 @@ class _InputDemoState extends State<InputDemo> {
       final file = File('${directory.path}/VOCA_LIST.json');
       String jsonContent = await file.readAsString();
       // VOCA_LIST 파일 초기화
-      Map<String, dynamic> data = {
-        "vocalist" : []
-      };
+      // Map<String, dynamic> data = {
+      //   "vocalist" : []
+      // };
 
-      // Map<String, dynamic> data = jsonDecode(jsonContent);
+      Map<String, dynamic> data = jsonDecode(jsonContent);
       // 3. 리스트 데이터 추가
       data['vocalist'].add(vocalistname);
 
@@ -97,6 +147,22 @@ class _InputDemoState extends State<InputDemo> {
       print("파일 이름들 담은 json 파일 \n"+jsonString2);
     } catch (e) {
       print('cannot update vocalistname: $e');
+    }
+  }
+// readJsonFile : json파일을 읽어서 vocalist를 반환하는 함수
+  Future<List> readJsonFile() async {
+    try {
+      // 1. JSON 파일 읽기
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/VOCA_LIST.json');
+      String jsonContent = await file.readAsString();
+      Map<String, dynamic> data = jsonDecode(jsonContent);
+
+      List<dynamic> return_list = data['vocalist'];
+      return return_list;
+    } catch (e) {
+      print('cannot read vocalistname json file: $e');
+      return [];
     }
   }
 
@@ -122,6 +188,7 @@ class _InputDemoState extends State<InputDemo> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
