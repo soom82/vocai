@@ -124,10 +124,10 @@ class _InputDemoState extends State<InputDemo> {
   }
 // 단어장 이름들 담을 json 파일, 단어장 추가할 때마다 함수 불러서 json파일에 적게 함
   Future<void> updateJsonFile(String vocalistname) async {
+    // 1. JSON 파일 읽기
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File('${directory.path}/VOCA_LIST.json');
     try {
-      // 1. JSON 파일 읽기
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/VOCA_LIST.json');
       String jsonContent = await file.readAsString();
       // VOCA_LIST 파일 초기화
       // Map<String, dynamic> data = {
@@ -145,8 +145,17 @@ class _InputDemoState extends State<InputDemo> {
       await file.writeAsString(updatedJsonContent);
       String jsonString2 = file.readAsStringSync();
       print("파일 이름들 담은 json 파일 \n"+jsonString2);
+
     } catch (e) {
-      print('cannot update vocalistname: $e');
+      Map<String, dynamic> data = {
+        "vocalist" : ["$vocalistname"]
+      };
+
+      String jsonString = jsonEncode(data);
+      await file.writeAsString(jsonString);
+      String jsonString2 = file.readAsStringSync();
+      print(jsonString2);
+      // print('cannot update vocalistname: $e');
     }
   }
 // readJsonFile : json파일을 읽어서 vocalist를 반환하는 함수
